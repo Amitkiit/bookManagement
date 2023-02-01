@@ -4,6 +4,9 @@ const router = require("./routers/router")
 mongoose.set('strictQuery', true)
 const app = express()
 app.use(express.json())
+const multer= require("multer");
+const { AppConfig } = require('aws-sdk');
+app.use( multer().any())
 
 mongoose.connect("mongodb+srv://sanhil143:raisahab12345@sanhildb.kk3knyj.mongodb.net/group16Database")
 .then(() => console.log("My mongoDB is connected"))
