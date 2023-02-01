@@ -56,7 +56,7 @@ const createReview = async function (req, res) {
             let temp = updatedBooks._doc
             temp.reviewData = reviewList
 
-            return res.status(201).send({ status: true, data: temp })
+            return res.status(201).send({ status: true,message:"review created successfully" data: temp })
       }
       catch (error) {
             return res.status(500).send({ status: false, message: error.message })
