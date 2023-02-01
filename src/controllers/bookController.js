@@ -98,10 +98,6 @@ const createBooks = async function (req, res) {
 const getBook = async (req, res) => {
     try {
         let query = req.query;
-
-        // check request body.
-
-        // sending all books which are not Deleted.
         if (Object.keys(query).length == 0) {
             let books = await BookModel.find({ isDeleted: false }).sort({ title: 1 })
                 .select({
@@ -116,12 +112,11 @@ const getBook = async (req, res) => {
             if (Object.keys(books).length == 0) {
                 return res.status(404).send({ status: false, message: "No Books Found..." });
             }
-            // let sortedBooks = books.sort((a, b) => (a.name > b.name ? 1 : -1))
+            
             return res.status(200).send({ status: true, message: "Success", data: books });
         }
 
-        // Destructuring
-        const { userId, category, subcategory } = query;
+        
 
         // userId validation.
         if (userId && !isValidObjectId(userId)) {            
@@ -131,16 +126,8 @@ const getBook = async (req, res) => {
         return res.status(400).send({ status: false, message: "enter userId" });
         }
 
-        // adding keys to data object for creating a filter.
-        if (userId) query.userId = userId;
-        if (category) query.category = category;
-        if (subcategory) query.subcategory = subcategory;
-
-
-        let filter = { ...query, isDeleted: false };
-
-        // sorting books by title in ascending order.
-        let bookList = await BookModel.find(filter).sort({ title: 1 })
+   
+        let bookList = await BookModel.find(query,{isDeleted:false}).sort({ title: 1 })
 
         if (!bookList) {
             return res.status(404).send({ status: false, message: "Book Not Found..." })
@@ -155,6 +142,7 @@ const getBook = async (req, res) => {
         return res.status(500).send({ status: false, message: error.message })
     }
 }
+
 
 // Get book by param
 const getBookById = async function (req, res) {
